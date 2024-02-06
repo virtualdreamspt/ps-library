@@ -1,4 +1,4 @@
-$${\color{green}Green}$$# This script is intended to find specific pcap for a specific filter
+# This script is intended to find specific pcap for a specific filter
 # this will help in filtering out content, when there's GB of pcaps to analyse
 
 # filter out conversations on pcaps
