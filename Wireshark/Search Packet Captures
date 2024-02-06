@@ -1,7 +1,7 @@
-<span style="color: green"> # This script is intended to find specific pcap for a specific filter
+$${\color{green}Green}$$# This script is intended to find specific pcap for a specific filter
 # this will help in filtering out content, when there's GB of pcaps to analyse
 
-# filter out conversations on pcaps</span>
+# filter out conversations on pcaps
 Get-ChildItem -Filter *.pcap | ForEach-Object {
     & "C:\Program Files\Wireshark\tshark.exe" -r $_.FullName -Y "ip.addr==10.0.0.1 and ip.addr==10.0.0.2" -w "$($_.BaseName)_conversation_source_and_destination.pcap"
 }
