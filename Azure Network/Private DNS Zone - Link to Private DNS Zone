@@ -1,0 +1,17 @@
+# Private DNS Variables
+$dnsgroupname="dns group zone name"
+$dnsrgname="private dns zone resource group"
+$dnszonename="private dns zone name, ex:privatelink.blob.core.windows.net"
+
+# Private Endpoint Variables
+$pename="private endpoint name"
+$pergname="private endpoint resource group name"
+$dnslinkgroupname="private endpoint dns link name"
+
+#Confirm if there's any existing links
+Get-AzPrivateDnsZoneGroup -ResourceGroupName $pergname -PrivateEndpointName $pename
+
+Get-AzPrivateDnsZoneGroup -ResourceGroupName $pergname -PrivateEndpointName $pename -name $dnsgroupname
+$zone1 = Get-AzPrivateDnsZone -ResourceGroupName $dnsrgname -Name $dnszonename
+$config = New-AzPrivateDnsZoneConfig -Name $dnslinkgroupname -PrivateDnsZoneId $zone1.ResourceId
+Set-AzPrivateDnsZoneGroup -ResourceGroupName $pergname -PrivateEndpointName $pename -name $dnsgroupname -PrivateDnsZoneConfig $config
