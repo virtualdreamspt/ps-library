@@ -1,0 +1,23 @@
+# filter out conversations on pcaps
+
+Get-ChildItem -Filter *.pcap | ForEach-Object {
+    & "C:\Program Files\Wireshark\tshark.exe" -r $_.FullName -Y "ip.addr==10.0.0.1 and ip.addr==10.0.0.2" -w "$($_.BaseName)_conversation_source_and_destination.pcap"
+}
+
+Get-ChildItem -Filter *.pcap | ForEach-Object {
+    & "C:\Program Files\Wireshark\tshark.exe" -r $_.FullName -Y "ip.addr==10.0.0.1" -w "$($_.BaseName)_conversation_source.pcap"
+}
+
+
+$pcapngFiles = Get-ChildItem -Filter *.pcap
+
+# loop through each pcapng file and filter packets based on IP addresses and TCP ports
+foreach ($file in $pcapngFiles) {
+    & "C:\Program Files\Wireshark\tshark.exe" -r $file.FullName -Y "ip.addr==10.0.0.1 and ip.addr==10.0.0.2 and tcp.port==443" -w "$($file.BaseName)_conversation_source_and_destination_443.pcap"
+}
+
+# merge all filtered pcapng files into a single file
+& "C:\Program Files\Wireshark\mergecap.exe" -w merged.pcap *_filtered.pcap
+
+# delete the filtered pcapng files
+Remove-Item *_filtered.pcap
